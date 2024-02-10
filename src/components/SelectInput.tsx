@@ -31,7 +31,7 @@ export default function SelectInput({label,data,passKey,passValue,inputValue}:se
                     
                      )}
                 </select>
-        <label className='text-[14px] absolute top-[-15px] left-[10px] bg-blue-500 bg-white p-1' > {label} </label>
+        <label className='text-[14px] absolute top-[-15px] left-[10px]  bg-white p-1' > {label} </label>
         </div>
 
     </div>
