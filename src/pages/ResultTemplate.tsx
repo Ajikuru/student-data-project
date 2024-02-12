@@ -41,25 +41,17 @@ interface studentResult{
     
 }
 
+
 export default function ResultTemplate({id=0}) {
 
-    // console.log(data.data);
-    
+       
 
-    const {currentData:result,isSuccess} = useGetResultQuery({id:id},{refetchOnMountOrArgChange:true});
+    const {currentData:result ,isSuccess} = useGetResultQuery({id:id},{refetchOnMountOrArgChange:true});
 
-    const fetchStudentReport:studentResult = result;
-
-    //const {fetchStudentReport} = result!.data;
+    const fetchStudentReport:studentResult = result ?? {};
 
     
-    
-    // const logo = "";
-    // const profile_picture = "";
 
-    // console.log(result);
-
-    //console.log(result?.data);
 
 
   return (isSuccess && result !=undefined)?(
@@ -80,7 +72,7 @@ export default function ResultTemplate({id=0}) {
             <p className='text-[12px] leading-[2rem]'> Student First Semester     Statement Of Result</p>
 
         </div>
-        {/* <img src={passport} alt=""  className=' w-24'/> */}
+        
 
         <img src={fetchStudentReport.profile_picture} alt=""  className=' w-24'/>
 
@@ -91,12 +83,12 @@ export default function ResultTemplate({id=0}) {
       <div className='flex justify-between'>
         <p>
             <span className='font-bold mr-5'>Name:</span>
-            {/* Chuckwuma James Namdi */}
+            
             {`${fetchStudentReport.data.surname} ${fetchStudentReport.data.firstname}`}
         </p>
         <p>
             <span className='font-bold mr-5'>Reg. No:</span>
-            {/* FCE/PDGE/2021/2022 */}
+            
             {`${fetchStudentReport.data.reg_no}`}
         </p>
       </div>
@@ -130,7 +122,7 @@ export default function ResultTemplate({id=0}) {
             {
                 fetchStudentReport.data.result.map((result:result,index:number) => {
 
-                    return (<tr className='odd:bg-[#F2F2F2] even:bg-[#FFFFFF]'> 
+                    return (<tr className='odd:bg-[#F2F2F2] even:bg-[#FFFFFF]' key={index}> 
                     <td className='p-3 text-left text-[14px]'>{index+1}</td>           
                     <td className='p-3 text-left text-[14px]'>{result.coursecode}</td>
                     <td className='p-3 text-left text-[14px]'>{result.title}</td>
@@ -173,11 +165,11 @@ export default function ResultTemplate({id=0}) {
           </tr>
 
       </tbody>
-     <footer>
-        <p>Remarks: <span className='text-[#0D7590]'>{fetchStudentReport.data.cummulative.remarks}</span></p>
-     </footer>
+    
 
     </table>
+
+    <p>Remarks: <span className='text-[#0D7590]'>{fetchStudentReport.data.cummulative.remarks}</span></p>
 
 
     <div className='mt-[6rem]'>
@@ -189,7 +181,7 @@ export default function ResultTemplate({id=0}) {
 
     </div>
 
-    {/* <button onClick={()=> handleGeneratePdf()}> Download</button> */}
+
     
     </div>
   ):null

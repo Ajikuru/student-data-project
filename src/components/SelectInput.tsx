@@ -17,7 +17,7 @@ export default function SelectInput({label,data,passKey,passValue,inputValue}:se
     <div>
          <div className='input-group relative mt-5'>
         <select className=' w-72  px-2 py-3 border-2 border-[#ADB7BE] rounded-md bg-white outline-black ' onChange={(e) => inputValue(e.target.value)}>
-                     <option  disabled selected  hidden className="text-[#ADB7BE]">select {label.toLowerCase()}</option>          
+                     <option  disabled  hidden className="text-[#ADB7BE]" selected>select {label.toLowerCase()}</option>          
                      <option value="">ALL</option>                    
                     {/* <option value="">2</option>
                     <option value="">3</option> */}

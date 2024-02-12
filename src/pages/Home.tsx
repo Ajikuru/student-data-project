@@ -28,13 +28,13 @@ function Home() {
     const tableHeading = ['S/N','Surname','FirstName','Age','Gender','Level','State','Action'];
     const[studentClicked,setStudentClicked] = useState(0);
 
-    //const[loadResult, setLoadResult] = useState(false);
 
     const[age,setAge] = useState("");
     const[state,setState] = useState("");
     const[level,setLevel] = useState("");
     const[gender,setGender] = useState("");
     const[listStudents, setListStudents] = useState([]);
+    
 
 
 
@@ -43,6 +43,8 @@ function Home() {
     const { data: levelData = [] } = useGetAllLevelQuery("");
     const { data: ageData = [] } = useGetAllAgeQuery("");
     const { data: genderData = [] } = useGetAllGenderQuery("");
+
+    const[isDowload, setDownload] = useState(false);
  
 
     useEffect( () => {
@@ -55,12 +57,18 @@ function Home() {
     
 const reportTemplateRef = useRef<HTMLDivElement>(null);
 
-const handleGeneratePdf = async (id:number) => {
+const handleGeneratePdf = async (e:React.MouseEvent<HTMLButtonElement>,id:number) => {
+    
 
+    //e.target.innerHTML = "Loading";
+   const target = e.target as HTMLButtonElement
+
+   target.innerHTML = "...please wait";
+
+     setDownload(true);
     setStudentClicked(id);
 
 await simulateLoading();
-//if(loadResult){
 
     const doc = new jsPDF({
         orientation: "p",
@@ -68,15 +76,18 @@ await simulateLoading();
         unit:'pt'
     });
     
+    
     if (reportTemplateRef.current){
 
         doc.html(reportTemplateRef.current, {
-            
+           
             async callback(doc) {
-                await doc.save('document');  
-                
-              //setLoadResult(!loadResult);      
-            },
+               
+                    await doc.save('document');  
+                    setDownload(false);
+                    target.innerHTML = "Download";
+             
+             },
             x: 10, // X position on the page
             y: 10, // Y position on the page
         
@@ -101,8 +112,6 @@ const handleClick = ()=>{
 
     setListStudents(filteredRows);
 }
-
-
 
 
 
@@ -139,7 +148,7 @@ const handleClick = ()=>{
         </thead>
 
         <tbody className=' divide-y divide-[#ECECEC]'>
-            {/* {isSuccess && data.data.students.map((items,key) => { */}
+
             {isSuccess &&  listStudents.map((items:listStudents,key) => {
                 return (
                     <tr key={key}>
@@ -153,7 +162,7 @@ const handleClick = ()=>{
                         <td className='p-3 text-left text-[14px]'>
                             <button 
                             className='px-4 py-3 bg-[#46C35F] text-white w-46'
-                            onClick={ () => handleGeneratePdf(items.id) }>Download</button>
+                            onClick={ (e) => handleGeneratePdf(e,items.id) } disabled={isDowload}>Download</button>
                          
                         </td>
                     </tr>
@@ -162,14 +171,14 @@ const handleClick = ()=>{
         </tbody>
       </table> 
       </div>
-{/* <div className='h-0 overflow-hidden'> */}
 
-<div>
+<div className='h-0 overflow-hidden'>
 
 <div ref={reportTemplateRef} >
-       <ResultTemplate id={studentClicked} 
+       <ResultTemplate 
+       id={studentClicked} 
        />
-       </div>
+</div>
 
 </div>
     
